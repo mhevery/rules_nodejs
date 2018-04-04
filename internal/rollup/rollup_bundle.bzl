@@ -112,10 +112,12 @@ def run_rollup(ctx, sources, config, output):
   if ctx.version_file:
     inputs += [ctx.version_file]
 
+  map_output = ctx.actions.declare_file(output.basename + ".map", sibling = output)
+
   ctx.action(
       executable = ctx.executable._rollup,
       inputs = inputs,
-      outputs = [output],
+      outputs = [output, map_output],
       arguments = [args]
   )
 
@@ -123,13 +125,16 @@ def _run_tsc(ctx, input, output):
   args = ctx.actions.args()
   args.add(["--target", "es5"])
   args.add("--allowJS")
+  args.add("--sourceMap")
   args.add(input.path)
   args.add(["--outFile", output.path])
+
+  map_output = ctx.actions.declare_file(output.basename + ".map", sibling = output)
 
   ctx.action(
       executable = ctx.executable._tsc,
       inputs = [input],
-      outputs = [output],
+      outputs = [output, map_output],
       arguments = [args]
   )
 

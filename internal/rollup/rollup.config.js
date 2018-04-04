@@ -118,6 +118,7 @@ module.exports = {
     // user might get control over this name.
     name: 'TMPL_label_name',
   },
+  sourcemap: true,
   plugins: [TMPL_additional_plugins].concat([
     {resolveId: resolveBazel},
     nodeResolve({jsnext: true, module: true}),
